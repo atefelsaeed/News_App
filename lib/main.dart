@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:hexcolor/hexcolor.dart';
+
+// import 'package:hexcolor/hexcolor.dart';
 import 'package:news_app/news_layout.dart';
 import 'package:news_app/shared/network/local/cache_helper.dart';
 
@@ -16,9 +17,9 @@ void main() async {
   DioHelper.init();
   await CacheHelper.init();
 
-  bool isDark = CacheHelper.getBoolean(key: 'isDark');
+  bool? isDark = CacheHelper.getBoolean(key: 'isDark');
 
-  runApp(MyApp(isDark));
+  runApp(MyApp(isDark ?? true));
 }
 
 class MyApp extends StatelessWidget {
@@ -30,24 +31,28 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MultiBlocProvider(
       providers: [
-        BlocProvider(create: (BuildContext context) => NewsCubit()..getBusiness(),),
-        BlocProvider(create: (BuildContext context) => AppCubit()
-          ..changeAppMode(
-            fromShared: isDark,
-          ),),
+        BlocProvider(
+          create: (BuildContext context) => NewsCubit()..getBusiness(),
+        ),
+        BlocProvider(
+          create: (BuildContext context) => AppCubit()
+            ..changeAppMode(
+              fromShared: isDark,
+            ),
+        ),
       ],
       child: BlocConsumer<AppCubit, AppStates>(
         listener: (BuildContext context, state) {},
         builder: (BuildContext context, state) {
           return MaterialApp(
             debugShowCheckedModeBanner: false,
-            theme: ThemeData(
-              primarySwatch: Colors.deepOrange,
+            theme: ThemeData.dark().copyWith(
+              primaryColor: Colors.deepOrange,
               scaffoldBackgroundColor: Colors.white,
               //==============appBarTheme==========
               appBarTheme: AppBarTheme(
                 titleSpacing: 20.0,
-                backwardsCompatibility: false,
+                // backwardsCompatibility: false,
                 systemOverlayStyle: SystemUiOverlayStyle(
                   statusBarColor: Colors.white,
                   statusBarIconBrightness: Brightness.dark,
@@ -77,22 +82,37 @@ class MyApp extends StatelessWidget {
                   fontWeight: FontWeight.w600,
                   color: Colors.black,
                 ),
+                headline2: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
+                bodyText2: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
+                headline1: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.black,
+                ),
               ),
             ),
 
             //==============thisIsDarkMode==========
-            darkTheme: ThemeData(
-              scaffoldBackgroundColor: HexColor('333739'),
-              primarySwatch: Colors.deepOrange,
+            darkTheme: ThemeData.dark().copyWith(
+              scaffoldBackgroundColor: Colors.black,
+              primaryColor: Colors.deepOrange,
               //==============appBarTheme==========
               appBarTheme: AppBarTheme(
                 titleSpacing: 20.0,
-                backwardsCompatibility: false,
+                // backwardsCompatibility: false,
                 systemOverlayStyle: SystemUiOverlayStyle(
-                  statusBarColor: HexColor('333739'),
+                  statusBarColor: Colors.grey,
                   statusBarIconBrightness: Brightness.light,
                 ),
-                backgroundColor: HexColor('333739'),
+                backgroundColor: Colors.grey,
                 elevation: 0.0,
                 titleTextStyle: TextStyle(
                   color: Colors.white,
@@ -110,11 +130,26 @@ class MyApp extends StatelessWidget {
                 selectedItemColor: Colors.deepOrange,
                 unselectedItemColor: Colors.grey,
                 elevation: 20.0,
-                backgroundColor: HexColor('333739'),
+                backgroundColor: Colors.grey,
               ),
               //==============textTheme==========
               textTheme: TextTheme(
                 bodyText1: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+                headline2: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+                bodyText2: TextStyle(
+                  fontSize: 18.0,
+                  fontWeight: FontWeight.w600,
+                  color: Colors.white,
+                ),
+                headline1: TextStyle(
                   fontSize: 18.0,
                   fontWeight: FontWeight.w600,
                   color: Colors.white,

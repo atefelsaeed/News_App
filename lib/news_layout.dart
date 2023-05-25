@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:news_app/modules/search/search_screen.dart';
+import 'package:news_app/shared/appCubit/states.dart';
 import 'package:news_app/shared/components/components.dart';
 
 import 'newsCubit/cubit.dart';
@@ -26,14 +27,16 @@ class NewsLayout extends StatelessWidget {
                   navigateTo(context, SearchScreen());
                 },
               ),
-              IconButton(
-                icon: Icon(
-                  Icons.brightness_4_outlined,
-                ),
-                onPressed: () {
-                  AppCubit.get(context).changeAppMode();
-                },
-              ),
+              BlocBuilder<AppCubit, AppStates>(builder: (context, states) {
+                return IconButton(
+                  icon: Icon(
+                    Icons.brightness_4_outlined,
+                  ),
+                  onPressed: () {
+                    AppCubit.get(context).changeAppMode();
+                  },
+                );
+              }),
             ],
           ),
           body: cubit.screens[cubit.currentIndex],
